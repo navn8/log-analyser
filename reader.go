@@ -38,10 +38,11 @@ func Parse(fi string) {
 	r := bufio.NewReader(f)
 	s, e := Readln(r)
 	for e == nil {
-		fmt.Println(s)
+		//fmt.Println(s)
 		entry := strings.Split(s, ",")
 		//format entry
 		url := strings.ToUpper(entry[0])
+
 		processingTime, err := strconv.ParseFloat(entry[1], 64)
 		if err != nil {
 			log.Fatal(err)
@@ -49,12 +50,16 @@ func Parse(fi string) {
 		responseStatus := ParseStatusCode(entry[2])
 
 		//Store the Entry Data - Populate frequency and avg map
-		if responseStatus == "200" {
+		if CheckValid(url, responseStatus) {
 			AvgProcessingTime[url] = (AvgProcessingTime[url]*float64(Frequency[url]) + processingTime) / float64(Frequency[url]+1)
 			Frequency[url] = Frequency[url] + 1
 		}
 		s, e = Readln(r)
 	}
+}
+
+func CheckValid(url, status string) bool {
+	return status == "200" && !strings.HasSuffix(url, ".GIF")
 }
 
 // data structure to hold a key/value pair.
