@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log-analyser/reader"
+	"log-analyser/internal/reader"
 )
 
 func main() {
